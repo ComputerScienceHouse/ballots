@@ -1,13 +1,23 @@
 package controllers
 
+
 import (
-	"github.com/revel/revel"
+    "github.com/revel/revel"
+    "net/http"
+    "io/ioutil"
 )
 
 type App struct {
-	*revel.Controller
+    *revel.Controller
 }
 
 func (c App) Index() revel.Result {
-	return c.Render()
+    resp, err := http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls")
+    if err != nil {
+        return c.Render()
+    }
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    responseString := string(body)
+    return c.Render(responseString)
 }
