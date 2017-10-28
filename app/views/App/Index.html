@@ -4,13 +4,15 @@
 <header class="jumbotron" style="background-color:#A9F16C">
   <div class="container">
     <div class="row">
-      <h1>Hello Fans!</h1>
+      <h1>Hello Fans! Welcome to the Ballots!</h1>
       {{ range .prs}}
         <b>#{{ .Number }}: <a href={{ .Html_url }}>{{ .Title }}</a></b>
         <br>
         <a href={{ .Diff_url }}>Link to Diff</a>
         <br>
-        {{ .User.Login }}
+        by <a href={{ .User.Html_url }}>{{ .User.Login }}</a>
+        <img src={{ .User.Avatar_url }} style="max-height: 100px; max-width: 100px;">
+        <br>
       {{end}}
       <p></p>
     </div>

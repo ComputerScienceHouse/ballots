@@ -1,11 +1,11 @@
 package controllers
 
-
 import (
     "github.com/revel/revel"
     "net/http"
     "io/ioutil"
     "encoding/json"
+    "fmt"
 )
 
 type App struct {
@@ -22,24 +22,28 @@ type PullRequest struct {
 
 type User struct {
     Login string `json:"login"`
-    Url string `json:"url"`
+    Html_url string `json:"html_url"`
+    Avatar_url string `json:"avatar_url"`
 }
 
 func (c App) Index() revel.Result {
     resp, err := http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls")
     if err != nil {
+        fmt.Printf("Error fetching github information")
         return c.Render()
     }
     defer resp.Body.Close()
-    body, err1 := ioutil.ReadAll(resp.Body)
-    if err1 != nil {
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body")
         return c.Render()
     }
     responseString := []byte(string(body))
     var prs []PullRequest
 
-    err2 := json.Unmarshal(responseString, &prs)
-    if err2 != nil {
+    err = json.Unmarshal(responseString, &prs)
+    if err != nil {
+        fmt.Printf("Error parsing json")
         return c.Render()
     }
 
