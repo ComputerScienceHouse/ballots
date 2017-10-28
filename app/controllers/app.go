@@ -6,6 +6,8 @@ import (
     "io/ioutil"
     "encoding/json"
     "fmt"
+    "strconv"
+    "strings"
 )
 
 type App struct {
@@ -18,6 +20,7 @@ type PullRequest struct {
     Html_url string
     Diff_url string
     User User `json:"user"`
+    Body string
 }
 
 type User struct {
@@ -48,4 +51,25 @@ func (c App) Index() revel.Result {
     }
 
     return c.Render(prs)
+}
+
+func (c App) Ballots(number int) revel.Result {
+    resp, err := http.Get("https://patch-diff.githubusercontent.com/raw/ComputerScienceHouse/Constitution/pull/" +
+        strconv.Itoa(number) + ".diff")
+    if err != nil {
+        fmt.Printf("Error fetching PR diff")
+        return c.Render()
+    }
+
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body")
+        return c.Render()
+    }
+
+    diffString := string(body)
+    strings.Replace(diffString, `\n`, "\n", -1)
+
+    return c.Render(diffString)
 }
