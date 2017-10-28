@@ -1,7 +1,12 @@
 {{set . "title" "ballots"}}
-<pre>
-<p style="white-space: pre-line: font-size=.25em">
-{{ .diffString }}
-</p>
-<p size="font-size=1em">Vote <b>YES</b> or <b>NO</b></p>
-</pre>
+{{ range .pokemon[1] }}
+    <pre>
+    <p style="white-space: pre-line; font-size: .25em">
+    {{ .diffString }}
+    </p>
+    <p size="font-size: .5em">
+    Vote <b>YES</b> or <b>NO</b>
+    Your pokemon is {{ . }}
+    </p>
+    </pre>
+{{ end }}

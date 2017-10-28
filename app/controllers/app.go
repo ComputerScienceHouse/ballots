@@ -4,10 +4,14 @@ import (
     "github.com/revel/revel"
     "net/http"
     "io/ioutil"
+    "io"
     "encoding/json"
     "fmt"
     "strconv"
     "strings"
+    "encoding/csv"
+    "bufio"
+    "os"
 )
 
 type App struct {
@@ -71,5 +75,19 @@ func (c App) Ballots(number int) revel.Result {
     diffString := string(body)
     strings.Replace(diffString, `\n`, "\n", -1)
 
-    return c.Render(diffString)
+    pokefile, err := os.Open("pokemon.csv")
+    if err != nil {
+        fmt.Printf("Error opening pokemon.csv")
+        return c.Render()
+    }
+
+    r := csv.NewReader(bufio.NewReader(pokefile))
+    for i := 0; i < 100; i++{
+        pokemon, err := r.Read()
+        if err == io.EOF {
+            break
+        }
+    }
+
+    return c.Render(diffString, pokemon)
 }
