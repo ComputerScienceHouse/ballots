@@ -17,6 +17,12 @@ type PullRequest struct {
     Number int
     Html_url string
     Diff_url string
+    User User `json:"user"`
+}
+
+type User struct {
+    Login string `json:"login"`
+    Url string `json:"url"`
 }
 
 func (c App) Index() revel.Result {
