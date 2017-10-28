@@ -82,12 +82,14 @@ func (c App) Ballots(number int) revel.Result {
     }
 
     r := csv.NewReader(bufio.NewReader(pokefile))
-    for i := 0; i < 100; i++{
+    var pokemons [101]string
+    for i := 1; i < 101; i++{
         pokemon, err := r.Read()
         if err == io.EOF {
             break
         }
+        pokemons[i] = pokemon[1]
     }
 
-    return c.Render(diffString, pokemon)
+    return c.Render(diffString, pokemons)
 }

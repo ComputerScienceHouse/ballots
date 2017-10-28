@@ -1,12 +1,14 @@
 {{set . "title" "ballots"}}
-{{ range .pokemon[1] }}
+{{ range $index, $pokemon := .pokemons }}
+    {{ if ne $index 0 }}
     <pre>
     <p style="white-space: pre-line; font-size: .25em">
-    {{ .diffString }}
+    {{ $.diffString }}
     </p>
     <p size="font-size: .5em">
     Vote <b>YES</b> or <b>NO</b>
-    Your pokemon is {{ . }}
+    Your pokemon is # {{ $index }}: {{ $pokemon }}
     </p>
     </pre>
+    {{ end }}
 {{ end }}
