@@ -4,8 +4,13 @@
 <header class="jumbotron" style="background-color:#A9F16C">
   <div class="container">
     <div class="row">
-      <h1>It works!</h1>
-      {{ .responseString }}
+      <h1>Hello Fans!</h1>
+      {{ range .prs}}
+        <b>#{{ .Number }}: <a href={{ .Html_url }}>{{ .Title }}</a></b>
+        <br>
+        <a href={{ .Diff_url }}>Link to Diff</a>
+        <br>
+      {{end}}
       <p></p>
     </div>
   </div>

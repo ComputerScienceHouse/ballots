@@ -5,10 +5,18 @@ import (
     "github.com/revel/revel"
     "net/http"
     "io/ioutil"
+    "encoding/json"
 )
 
 type App struct {
     *revel.Controller
+}
+
+type PullRequest struct {
+    Title string
+    Number int
+    Html_url string
+    Diff_url string
 }
 
 func (c App) Index() revel.Result {
@@ -17,7 +25,17 @@ func (c App) Index() revel.Result {
         return c.Render()
     }
     defer resp.Body.Close()
-    body, err := ioutil.ReadAll(resp.Body)
-    responseString := string(body)
-    return c.Render(responseString)
+    body, err1 := ioutil.ReadAll(resp.Body)
+    if err1 != nil {
+        return c.Render()
+    }
+    responseString := []byte(string(body))
+    var prs []PullRequest
+
+    err2 := json.Unmarshal(responseString, &prs)
+    if err2 != nil {
+        return c.Render()
+    }
+
+    return c.Render(prs)
 }
