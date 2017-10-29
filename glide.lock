@@ -1,0 +1,38 @@
+hash: 89ba024588973f68be60c47aa491cac4c967ff58606cb1cc7fa9a819b353544e
+updated: 2017-10-29T01:52:42.363861804-04:00
+imports:
+- name: github.com/agtorre/gocolorize
+  version: 99fea4bc9517f07eea8194702cb7076f4845b7de
+- name: github.com/klauspost/compress
+  version: f3dce52e0576655d55fd69e74b63da96ad1108f3
+  subpackages:
+  - flate
+  - gzip
+  - zlib
+- name: github.com/klauspost/cpuid
+  version: ae7887de9fa5d2db4eaa8174a7eff2c1ac00f2da
+- name: github.com/revel/config
+  version: 662332b741dd464a886ab0901379c02b9bc5dc30
+- name: github.com/revel/modules
+  version: 8c55c9a970cf5062eeb0368e809d6f27cffc28b0
+  subpackages:
+  - static/app/controllers
+  - testrunner/app
+  - testrunner/app/controllers
+- name: github.com/revel/pathtree
+  version: 41257a1839e945fce74afd070e02bab2ea2c776a
+- name: github.com/revel/revel
+  version: 6c8d554fd50278abe4a1c8ad50b811728d5f2a49
+  subpackages:
+  - testing
+- name: golang.org/x/net
+  version: c73622c77280266305273cb545f54516ced95b93
+  subpackages:
+  - websocket
+- name: golang.org/x/sys
+  version: 661970f62f5897bc0cd5fdca7e087ba8a98a8fa1
+  subpackages:
+  - unix
+- name: gopkg.in/fsnotify.v1
+  version: 629574ca2a5df945712d3079857300b5e4da0236
+testImports: []
