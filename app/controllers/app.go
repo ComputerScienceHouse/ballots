@@ -75,7 +75,7 @@ func (c App) Ballots(number int) revel.Result {
     diffString := string(body)
     strings.Replace(diffString, `\n`, "\n", -1)
 
-    pokefile, err := os.Open("pokemon.csv")
+    pokefile, err := os.Open("src/github.com/sgreene570/ballots/pokemon.csv")
     if err != nil {
         fmt.Printf("Error opening pokemon.csv")
         return c.Render()

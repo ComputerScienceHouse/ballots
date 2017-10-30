@@ -2,10 +2,10 @@
 {{ range $index, $pokemon := .pokemons }}
     {{ if ne $index 0 }}
     <pre>
-    <p style="white-space: pre-line; font-size: .25em">
+    <p style="white-space: pre-line; font-size: .25em; display: inline">
     {{ $.diffString }}
     </p>
-    <p size="font-size: .5em">
+    <p size="font-size: .4em">
     Vote <b>YES</b> or <b>NO</b>
     Your pokemon is # {{ $index }}: {{ $pokemon }}
     </p>
