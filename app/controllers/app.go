@@ -75,6 +75,27 @@ func (c App) Ballots(number int) revel.Result {
     diffString := string(body)
     strings.Replace(diffString, `\n`, "\n", -1)
 
+    resp, err = http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls/" + strconv.Itoa(number) + ".diff")
+    if err != nil {
+        fmt.Printf("Error fetching PR title")
+        return c.Render()
+    }
+
+    defer resp.Body.Close()
+    titleBody, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body")
+        return c.Render()
+    }
+
+    reqString := []byte(string(titleBody))
+    var pr PullRequest
+    err = json.Unmarshal(reqString, &pr)
+    if err != nil {
+        fmt.Printf("Error parsing json")
+        return c.Render()
+    }
+
     pokefile, err := os.Open(os.Getenv("PCSV_PATH"))
     if err != nil {
         fmt.Printf("Error opening pokemon.csv")
@@ -91,5 +112,5 @@ func (c App) Ballots(number int) revel.Result {
         pokemons[i] = pokemon[1]
     }
 
-    return c.Render(diffString, pokemons)
+    return c.Render(diffString, pokemons, pr)
 }

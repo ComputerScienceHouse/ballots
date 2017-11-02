@@ -1,14 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/public/css/Ballots.css">
+</head>
+<body>
 {{set . "title" "ballots"}}
 {{ range $index, $pokemon := .pokemons }}
     {{ if ne $index 0 }}
-    <pre>
-    <p style="white-space: pre-line; font-size: .25em; display: inline">
-    {{ $.diffString }}
-    </p>
-    <p size="font-size: .4em">
-    Vote <b>YES</b> or <b>NO</b>
-    Your pokemon is # {{ $index }}: {{ $pokemon }}
-    </p>
-    </pre>
+    <div>
+      <p class="header">
+        <b>{{ $.pr.Title }}</b>
+      </p>
+      <p class="description">
+        {{ $.diffString }}
+      </p>
+      <p class="vote">Vote <b>YES</b> or <b>NO</b>
+      Your pokemon is # {{ $index }}: {{ $pokemon }}
+      </p>
+      <hr>
+    </div>
     {{ end }}
 {{ end }}
+</body>
+</html>

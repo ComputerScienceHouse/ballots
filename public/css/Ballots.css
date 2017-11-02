@@ -1,0 +1,26 @@
+div {
+    width: 50%;
+    float: left;
+    page-break-inside: avoid;
+    page-break-before: always;
+    display: inline-block;
+}
+p {
+    white-space: pre-line;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+}
+.header {
+    font-size: .45em;
+}
+.description {
+    font-size: .25em;
+}
+.vote {
+    font-size: .4em;
+}
+br {
+   display: block;
+   margin: 4px 0;
+}
