@@ -4,21 +4,22 @@
 <header class="jumbotron" style="background-color:#A9F16C">
   <div class="container">
     <div class="row">
-      <h1>Hello Fans! Welcome to the Ballots!</h1>
+      <h1>Welcome to the Ballots!</h1>
+    </div>
       {{ range .prs}}
-        <b>#{{ .Number }}: <a href={{ .Html_url }}>{{ .Title }}</a></b>
-        <br>
-        <a href={{ .Diff_url }}>Link to Diff</a>
-        <br>
-        by <a href={{ .User.Html_url }}>{{ .User.Login }}</a>
+      <div class="row">
+        <h4><b>#{{ .Number }}: <a href={{ .Html_url }}>{{ .Title }}</a></b></h4>
         <br>
         <img src={{ .User.Avatar_url }} style="max-height: 100px; max-width: 100px;">
+        <br>
+        By <a href={{ .User.Html_url }}>{{ .User.Login }}</a>
+        <br>
         <pre>{{ .Body }}</pre>
         <a href="/ballots/{{ .Number }}">Ballots</a>
         <br>
         <br>
+      </div>
       {{end}}
-      <p></p>
     </div>
   </div>
 </header>
