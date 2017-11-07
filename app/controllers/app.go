@@ -22,7 +22,6 @@ type PullRequest struct {
     Title string
     Number int
     Html_url string
-    Diff_url string
     User User `json:"user"`
     Body string
 }
@@ -57,9 +56,9 @@ func (c App) Index() revel.Result {
     return c.Render(prs)
 }
 
-func (c App) Ballots(number int) revel.Result {
+func (c App) Ballots(prnumber int, numballots int) revel.Result {
     resp, err := http.Get("https://patch-diff.githubusercontent.com/raw/ComputerScienceHouse/Constitution/pull/" +
-        strconv.Itoa(number) + ".diff")
+        strconv.Itoa(prnumber) + ".diff")
     if err != nil {
         fmt.Printf("Error fetching PR diff")
         return c.Render()
@@ -75,7 +74,7 @@ func (c App) Ballots(number int) revel.Result {
     diffString := string(body)
     strings.Replace(diffString, `\n`, "\n", -1)
 
-    resp, err = http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls/" + strconv.Itoa(number) + ".diff")
+    resp, err = http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls/" + strconv.Itoa(prnumber) + ".diff")
     if err != nil {
         fmt.Printf("Error fetching PR title")
         return c.Render()
@@ -103,8 +102,9 @@ func (c App) Ballots(number int) revel.Result {
     }
 
     r := csv.NewReader(bufio.NewReader(pokefile))
-    var pokemons [101]string
-    for i := 1; i < 101; i++{
+    numballots = numballots + 1
+    pokemons := make([]string, numballots)
+    for i := 1; i < numballots; i++{
         pokemon, err := r.Read()
         if err == io.EOF {
             break
