@@ -1,9 +1,11 @@
 div {
-    width: 50%;
+    width: 45%;
     float: left;
     page-break-inside: avoid;
     page-break-before: always;
     display: inline-block;
+    margin-bottom: 35px;
+    margin-left: 35px
 }
 p {
     white-space: pre-line;
