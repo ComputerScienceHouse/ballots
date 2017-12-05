@@ -6,7 +6,8 @@
     <div class="row">
       <h1>Welcome to the Ballots!</h1>
     </div>
-      {{ range .prs}}
+    {{ if .prs }}
+      {{ range $index, $prs := .prs}}
       <div class="row">
         <h4><b>#{{ .Number }}: <a href={{ .Html_url }}>{{ .Title }}</a></b></h4>
         <br>
@@ -19,7 +20,10 @@
         <br>
         <br>
       </div>
-      {{end}}
+      {{ end }}
+    {{ else }}
+        No pull requests are out on the Constitution! Sad!
+    {{ end }}
     </div>
   </div>
 </header>
