@@ -56,6 +56,12 @@ func (c App) Index() revel.Result {
     return c.Render(prs)
 }
 
+func (c App) CustomBallots(prompt string, answers string) revel.Result {
+    pokemons := getPokemon(100)
+    options := strings.Split(answers, "\n")
+    return c.Render(prompt, options, pokemons)
+}
+
 func (c App) Ballots(prnumber int, numballots int) revel.Result {
     resp, err := http.Get("https://patch-diff.githubusercontent.com/raw/ComputerScienceHouse/Constitution/pull/" +
         strconv.Itoa(prnumber) + ".diff")
@@ -95,10 +101,15 @@ func (c App) Ballots(prnumber int, numballots int) revel.Result {
         return c.Render()
     }
 
+    pokemons := getPokemon(100)
+    return c.Render(diffString, pokemons, pr)
+}
+
+func getPokemon(numballots int) []string {
     pokefile, err := os.Open(os.Getenv("PCSV_PATH"))
     if err != nil {
         fmt.Printf("Error opening pokemon.csv")
-        return c.Render()
+        return nil
     }
 
     r := csv.NewReader(bufio.NewReader(pokefile))
@@ -111,6 +122,6 @@ func (c App) Ballots(prnumber int, numballots int) revel.Result {
         }
         pokemons[i] = pokemon[1]
     }
-
-    return c.Render(diffString, pokemons, pr)
+    pokefile.Close()
+    return pokemons
 }

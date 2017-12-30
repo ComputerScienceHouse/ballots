@@ -15,6 +15,7 @@ GET     /favicon.ico                            404
 GET     /public/*filepath                       Static.Serve("public")
 
 GET     /ballots/:prnumber/:numballots          App.Ballots
+GET     /App/CustomBallots                      App.CustomBallots
 
 # Catch all
 *       /:controller/:action                    :controller.:action

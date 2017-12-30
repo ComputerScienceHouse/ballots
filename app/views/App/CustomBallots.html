@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/public/css/Ballots.css">
+</head>
+<body>
+{{ set . "title" "customballots" }}
+{{ range $index, $pokemon := .pokemons }}
+    {{ if ne $index 0 }}
+    <div>
+      <p class="header">
+        <b>{{ $.prompt }}</b>
+      </p>
+      <p class="description">
+        {{ range $.options }}
+            <b>[ ]</b> {{ . }}
+        {{ end }}
+      </p>
+      <p class="vote">
+      Your pokemon is # {{ $index }}: {{ $pokemon }}
+      </p>
+      <hr>
+    </div>
+    {{ end }}
+{{ end }}
+</body>
+</html>

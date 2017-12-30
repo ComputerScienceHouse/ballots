@@ -24,6 +24,16 @@
     {{ else }}
         No pull requests are out on the Constitution! Sad!
     {{ end }}
+    <hr>
+    <div class="row">
+        <b><i>Create dank custom ballots!</b></i>
+        <form action="/App/CustomBallots" method="GET">
+            <b>Ballot Question:</b>
+            <textarea rows='4' cols='40' name="prompt"></textarea><br>
+            <b>Ballot choices:</b>
+            <textarea rows='4' cols='40' name="answers"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
     </div>
   </div>
 </header>
