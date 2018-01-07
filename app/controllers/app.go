@@ -33,21 +33,28 @@ type User struct {
 }
 
 func (c App) Index() revel.Result {
+    // Fetch open pull requests
     resp, err := http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls")
     if err != nil {
         fmt.Printf("Error fetching github information")
         return c.Render()
     }
+
+    // Read http response body
     defer resp.Body.Close()
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
         fmt.Printf("Error reading response body")
         return c.Render()
     }
-    responseString := []byte(string(body))
+
+    // Cast response body to byte array for json parsing
+    respString := []byte(string(body))
+    // Create empty array of pull request structs
     var prs []PullRequest
 
-    err = json.Unmarshal(responseString, &prs)
+    // Parse json automagically into pull request array (pointers are neat)
+    err = json.Unmarshal(respString, &prs)
     if err != nil {
         fmt.Printf("Error parsing json")
         return c.Render()
@@ -57,12 +64,16 @@ func (c App) Index() revel.Result {
 }
 
 func (c App) CustomBallots(prompt string, answers string) revel.Result {
+    // TODO
+    // Variable number of pokemon/ballots
     pokemons := getPokemon(100)
+    // Delimit text input based on new lines in the text area
     options := strings.Split(answers, "\n")
     return c.Render(prompt, options, pokemons)
 }
 
 func (c App) Ballots(prnumber int, numballots int) revel.Result {
+    // Fetch pull request diff
     resp, err := http.Get("https://patch-diff.githubusercontent.com/raw/ComputerScienceHouse/Constitution/pull/" +
         strconv.Itoa(prnumber) + ".diff")
     if err != nil {
@@ -78,8 +89,10 @@ func (c App) Ballots(prnumber int, numballots int) revel.Result {
     }
 
     diffString := string(body)
+    // Fix new lines
     strings.Replace(diffString, `\n`, "\n", -1)
 
+    // Fetch PR data to determine the title
     resp, err = http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls/" + strconv.Itoa(prnumber) + ".diff")
     if err != nil {
         fmt.Printf("Error fetching PR title")
@@ -93,19 +106,24 @@ func (c App) Ballots(prnumber int, numballots int) revel.Result {
         return c.Render()
     }
 
-    reqString := []byte(string(titleBody))
+    // Cast response body to usable byte array
+    titleString := []byte(string(titleBody))
     var pr PullRequest
-    err = json.Unmarshal(reqString, &pr)
+    // Parse title with json
+    err = json.Unmarshal(titleString, &pr)
     if err != nil {
         fmt.Printf("Error parsing json")
         return c.Render()
     }
 
+    // TODO
+    // Variable number of pokemon/ballots
     pokemons := getPokemon(100)
     return c.Render(diffString, pokemons, pr)
 }
 
 func getPokemon(numballots int) []string {
+    // Open pokemon csv file
     pokefile, err := os.Open(os.Getenv("PCSV_PATH"))
     if err != nil {
         fmt.Printf("Error opening pokemon.csv")
@@ -113,7 +131,9 @@ func getPokemon(numballots int) []string {
     }
 
     r := csv.NewReader(bufio.NewReader(pokefile))
+    // Off by one as usual
     numballots = numballots + 1
+    // Create empty pokemon array (this is some weird go call that just works)
     pokemons := make([]string, numballots)
     for i := 1; i < numballots; i++{
         pokemon, err := r.Read()
@@ -122,6 +142,7 @@ func getPokemon(numballots int) []string {
         }
         pokemons[i] = pokemon[1]
     }
+    // Closing file is important
     pokefile.Close()
     return pokemons
 }
