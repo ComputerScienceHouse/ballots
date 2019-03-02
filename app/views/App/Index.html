@@ -26,17 +26,27 @@
     {{ end }}
     <hr>
     <div class="row">
-        <b><i>Create dank custom ballots!</b></i>
+        <b><i>Create custom ballots!</b></i>
         <form action="/App/CustomBallots" method="GET">
             <b>Ballot Question:</b>
+            <br>
             <textarea rows='4' cols='40' name="prompt"></textarea><br>
             <b>Ballot choices (new line delimited):</b>
+            <br>
             <textarea rows='4' cols='40' name="answers"></textarea><br>
             <input type="submit" value="Submit">
         </form>
     </div>
   </div>
+  <div class="row">
+  <center>
+      {{ if .commitHash }}
+          <a href="https://github.com/sgreene570/ballots">{{ .commitHash }}</a>
+      {{ end }}
+  </center>
+  </div>
 </header>
+
 
 <div class="container">
   <div class="row">

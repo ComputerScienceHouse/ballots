@@ -12,6 +12,7 @@ import (
     "encoding/csv"
     "bufio"
     "os"
+    "os/exec"
 )
 
 type App struct {
@@ -60,7 +61,9 @@ func (c App) Index() revel.Result {
         return c.Render()
     }
 
-    return c.Render(prs)
+    commitHash := getGitCommitHash()
+
+    return c.Render(prs, commitHash)
 }
 
 func (c App) CustomBallots(prompt string, answers string) revel.Result {
@@ -70,6 +73,18 @@ func (c App) CustomBallots(prompt string, answers string) revel.Result {
     // Delimit text input based on new lines in the text area
     options := strings.Split(answers, "\n")
     return c.Render(prompt, options, pokemons)
+}
+
+
+func getGitCommitHash() string {
+    out, err := exec.Command("git", "rev-parse", "--short", "HEAD").Output()
+    if err != nil {
+        fmt.Printf("Error getting git commit has")
+    }
+
+    hash := string(out[:])
+
+    return hash
 }
 
 func (c App) Ballots(prnumber int, numballots int) revel.Result {
@@ -96,9 +111,7 @@ func (c App) Ballots(prnumber int, numballots int) revel.Result {
     resp, err = http.Get("https://api.github.com/repos/ComputerScienceHouse/Constitution/pulls/" + strconv.Itoa(prnumber) + ".diff")
     if err != nil {
         fmt.Printf("Error fetching PR title")
-        return c.Render()
-    }
-
+        return c.Render() } 
     defer resp.Body.Close()
     titleBody, err := ioutil.ReadAll(resp.Body)
     if err != nil {
@@ -146,3 +159,4 @@ func getPokemon(numballots int) []string {
     pokefile.Close()
     return pokemons
 }
+
