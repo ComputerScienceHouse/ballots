@@ -76,7 +76,9 @@ func (c App) CustomBallots(prompt string, answers string) revel.Result {
 }
 
 func getGitCommitHash() string {
-	out, err := exec.Command("git", "rev-parse", "--short", "HEAD").Output()
+	command := exec.Command("git", "rev-parse", "--short", "HEAD")
+	command.Dir = os.Getenv("GIT_ROOT")
+	out, err := command.Output()
 	if err != nil {
 		fmt.Printf("Error getting git commit hash, %s\n", err)
 	}
